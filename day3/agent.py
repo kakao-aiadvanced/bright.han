@@ -4,7 +4,7 @@ from pprint import pprint
 from langchain_core.documents import Document
 from tavily import TavilyClient
 
-tavily = TavilyClient(api_key='TOBE_FILLED')
+tavily = TavilyClient(api_key='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')
 
 response = tavily.search(query="Where does Messi play right now?", max_results=3)
 context = [{"url": obj["url"], "content": obj["content"]} for obj in response['results']]
@@ -21,7 +21,8 @@ response_qna = tavily.qna_search(query="Where does Messi play right now?")
 
 from langchain_openai import ChatOpenAI
 
-# Need to Set the OpenAI API key
+# NEED TO ADD OPENAI API KEY TO ENVIRONMENT VARIABLES
+# os.environ['OPENAI_API_KEY'] = 'TOBE-FILLED'
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 ### Index
@@ -72,11 +73,6 @@ prompt = ChatPromptTemplate.from_messages(
 
 question_router = prompt | llm | JsonOutputParser()
 
-# question = "llm agent memory"
-# question = "What is prompt?"
-# docs = retriever.get_relevant_documents(question)
-# print(question_router.invoke({"question": question}))
-
 ### Retrieval Grader
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.prompts import ChatPromptTemplate
@@ -96,10 +92,6 @@ prompt = ChatPromptTemplate.from_messages(
 )
 
 retrieval_grader = prompt | llm | JsonOutputParser()
-question = "What is prompt?"
-# docs = retriever.invoke(question)
-# doc_txt = docs[0].page_content
-# print(retrieval_grader.invoke({"question": question, "document": doc_txt}))
 
 ### Generate
 from langchain_core.output_parsers import StrOutputParser
@@ -120,14 +112,7 @@ prompt = ChatPromptTemplate.from_messages(
 # Chain
 rag_chain = prompt | llm | StrOutputParser()
 
-# Run
-# question = "What is prompt?"
-# docs = retriever.invoke(question)
-# generation = rag_chain.invoke({"context": docs, "question": question})
-# print(generation)
-
 ### Hallucination Grader
-
 system = """You are a grader assessing whether
     an answer is grounded in / supported by a set of facts. Give a binary 'yes' or 'no' score to indicate
     whether the answer is grounded in / supported by a set of facts. Provide the binary score as a JSON with a
@@ -141,7 +126,6 @@ prompt = ChatPromptTemplate.from_messages(
 )
 
 hallucination_grader = prompt | llm | JsonOutputParser()
-# hallucination_grader.invoke({"documents": docs, "generation": generation})
 
 ### Answer Grader
 prompt = ChatPromptTemplate.from_messages(
@@ -165,8 +149,6 @@ prompt = ChatPromptTemplate.from_messages(
 
 answer_grader = prompt | llm | JsonOutputParser()
 
-
-# answer_grader.invoke({"question": question, "generation": generation})
 
 def retrieve(state):
     """
