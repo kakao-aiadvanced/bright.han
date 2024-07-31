@@ -4,7 +4,7 @@ from pprint import pprint
 from langchain_core.documents import Document
 from tavily import TavilyClient
 
-tavily = TavilyClient(api_key='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')
+tavily = TavilyClient(api_key='TOBE_FILLED')
 
 response = tavily.search(query="Where does Messi play right now?", max_results=3)
 context = [{"url": obj["url"], "content": obj["content"]} for obj in response['results']]
@@ -21,8 +21,7 @@ response_qna = tavily.qna_search(query="Where does Messi play right now?")
 
 from langchain_openai import ChatOpenAI
 
-# NEED TO ADD OPENAI API KEY TO ENVIRONMENT VARIABLES
-# os.environ['OPENAI_API_KEY'] = 'TOBE-FILLED'
+# NEED TO ADD key TO ENVIRONMENT VARIABLES
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 ### Index
