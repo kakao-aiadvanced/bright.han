@@ -22,6 +22,7 @@ response_qna = tavily.qna_search(query="Where does Messi play right now?")
 from langchain_openai import ChatOpenAI
 
 # NEED TO ADD key TO ENVIRONMENT VARIABLES
+os.environ['OPENAI_API_KEY'] = 'api key'
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 ### Index

@@ -1,7 +1,7 @@
 import os
 
 from langchain_openai import ChatOpenAI
-
+os.environ['OPENAI_API_KEY'] = 'api key'
 llm = ChatOpenAI(model="gpt-4o-mini")
 
 from langchain_community.document_loaders import TextLoader
